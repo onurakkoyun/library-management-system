@@ -2,6 +2,7 @@ package com.lms.librarymanagementsystem.services.concretes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,13 @@ import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.AddBookRe
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.AssignAuthorRequest;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.AssignCategoryRequest;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.AssignPublisherRequest;
+import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.DeleteBookRequest;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.UpdateBookRequest;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.AddBookResponse;
+import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.DeleteBookResponse;
+import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.ListBookResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.UpdateBookResponse;
 import com.lms.librarymanagementsystem.services.mappers.BookMapper;
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -77,6 +80,24 @@ public class BookServiceImpl implements BookService {
 		bookRepository.save(existingBook);
 
 		UpdateBookResponse response = new UpdateBookResponse("Book updated.");
+
+		return response;
+	}
+
+	@Override
+	public DeleteBookResponse delete(DeleteBookRequest request) {
+		bookRepository.deleteById(request.getBookId());
+		
+		DeleteBookResponse response = new DeleteBookResponse("Book deleted.");
+		return response;
+	}
+
+	@Override
+	public List<ListBookResponse> getAll() {
+		List<Book> books = bookRepository.findAll();
+
+		List<ListBookResponse> response = books.stream()
+				.map(BookMapper.INSTANCE::mapListBookToListBookResponse).collect(Collectors.toList());
 
 		return response;
 	}
