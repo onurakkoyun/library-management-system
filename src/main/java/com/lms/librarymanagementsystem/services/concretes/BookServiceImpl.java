@@ -36,17 +36,17 @@ public class BookServiceImpl implements BookService {
 
 		List<Author> authors = Optional.ofNullable(request.getAuthors())
 				.orElse(Collections.emptyList()).stream()
-				.map(dto -> BookMapper.INSTANCE.mapAssignAuthorRequestToAuthor(dto))
+				.map(author -> BookMapper.INSTANCE.mapAssignAuthorRequestToAuthor(author))
 				.collect(Collectors.toList());
 		book.setAuthors(authors);// Authors ile ilişkilendirme.
 
 		List<Category> categories = Optional.ofNullable(request.getCategories()).orElse(Collections.emptyList())
-				.stream().map(dto -> BookMapper.INSTANCE.mapAssignCategoryRequestToCategory(dto))
+				.stream().map(category -> BookMapper.INSTANCE.mapAssignCategoryRequestToCategory(category))
 				.collect(Collectors.toList());
 		book.setCategories(categories);// Categories ile ilişkilendirme.
 
 		List<Publisher> publishers = Optional.ofNullable(request.getPublishers()).orElse(Collections.emptyList())
-				.stream().map(dto -> BookMapper.INSTANCE.mapAssignPublisherRequestToPublisher(dto))
+				.stream().map(publisher -> BookMapper.INSTANCE.mapAssignPublisherRequestToPublisher(publisher))
 				.collect(Collectors.toList());
 		book.setPublishers(publishers);// Publishers ile ilişkilendirme.
 

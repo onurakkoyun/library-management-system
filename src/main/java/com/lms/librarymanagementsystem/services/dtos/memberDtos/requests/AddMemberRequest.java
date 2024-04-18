@@ -18,7 +18,7 @@ public class AddMemberRequest {
 	private String lastName;
 	
 	@Size(min = 11, max = 11, message = "Kimlik numarası 11 haneli olmalıdır")
-    @Pattern(regexp = "^(?=.*[1-9])(?=.*\\b(0[1-9]|1[0-2])\\b)\\d{11}$", message = "Geçersiz kimlik numarası formatı")
+    //@Pattern(regexp = "^(?=.*[1-9])(?=.*\\b(0[1-9]|1[0-2])\\b)\\d{11}$", message = "Geçersiz kimlik numarası formatı")
 	private String identityNumber;
 
 	private int yearOfBirth;

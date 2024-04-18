@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +41,9 @@ public class Book extends BaseEntity<Integer>{
 	
 	@Column(name = "release_date")
 	private LocalDate releaseDate;
+	
+	@OneToMany(mappedBy = "book")
+	private List<BorrowingBook> borrowingBooks;
 	
 	@ManyToMany
     @JoinTable(

@@ -1,6 +1,7 @@
 package com.lms.librarymanagementsystem.services.rules.concretes;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,10 @@ public class BorrowingBookBusinessRuleImpl implements BorrowingBookBusinessRuleS
 
 	@Override
 	public double calculatePenalty(LocalDate currentDate, LocalDate endDate) {
-		int currentYear = currentDate.getYear();
+		
+		long daysBetween = ChronoUnit.DAYS.between(currentDate, endDate);
+		
+		/*int currentYear = currentDate.getYear();
 	    int currentMonth = currentDate.getMonthValue();
 	    int currentDay = currentDate.getDayOfMonth();
 
@@ -26,7 +30,7 @@ public class BorrowingBookBusinessRuleImpl implements BorrowingBookBusinessRuleS
 	    int monthDiff = currentMonth - endMonth;
 	    int dayDiff = currentDay - endDay;
 
-	    int totalDays = (yearDiff * 365) + (monthDiff * 30) + dayDiff;
-	    return totalDays * 0.25; // Örnek olarak her geçen gün için 25 kuruş ceza.
+	    int totalDays = (yearDiff * 365) + (monthDiff * 30) + dayDiff;*/
+	    return daysBetween * 0.25; // Örnek olarak her geçen gün için 25 kuruş ceza.
 	}
 }
