@@ -1,5 +1,7 @@
 package com.lms.librarymanagementsystem.services.rules.abstracts;
 
-public interface BorrowingBookBusinessRuleService {
+import java.time.LocalDate;
 
+public interface BorrowingBookBusinessRuleService {
+	double calculatePenalty(LocalDate currentDate, LocalDate endDate);
 }

@@ -1,5 +1,8 @@
 package com.lms.librarymanagementsystem.services.abstracts;
 
-public interface MemberService {
+import com.lms.librarymanagementsystem.services.dtos.memberDtos.requests.AddMemberRequest;
+import com.lms.librarymanagementsystem.services.dtos.memberDtos.responses.AddMemberResponse;
 
+public interface MemberService {
+	AddMemberResponse add(AddMemberRequest request);
 }

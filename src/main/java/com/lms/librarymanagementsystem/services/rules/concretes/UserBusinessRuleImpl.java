@@ -6,15 +6,14 @@ import com.lms.librarymanagementsystem.core.utilities.exceptions.types.BusinessE
 import com.lms.librarymanagementsystem.repositories.UserRepository;
 import com.lms.librarymanagementsystem.services.rules.abstracts.UserBusinessRuleService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class UserBusinessRuleImpl implements UserBusinessRuleService {
 
 	private UserRepository userRepository;
-
-	public UserBusinessRuleImpl(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-
+	
 	public void checkIfUsernameAlreadyExists(String username) {
 		this.userRepository.getByUsername(username).ifPresent(user -> {
 			throw new BusinessException(user.getUsername() + " zaten mevcut.");
