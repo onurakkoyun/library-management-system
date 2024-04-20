@@ -18,6 +18,8 @@ public class ListBookResponse {
 	
 	private String bookName;
 	
+	private String isbn;
+	
 	private int edition;
 	
 	private int numberOfPages;

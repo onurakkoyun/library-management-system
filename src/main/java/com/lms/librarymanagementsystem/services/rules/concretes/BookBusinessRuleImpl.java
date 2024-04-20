@@ -26,7 +26,6 @@ public class BookBusinessRuleImpl implements BookBusinessRuleService {
 			Book book = optionalBook.get();
 			int unitsInStock = book.getUnitsInStock();
 			int borroedInStock = book.getBorrowedInStock();
-			//int borrowingCount = bookRepository.getBorrowingCountByBookId(book.getId());
 			if (borroedInStock == unitsInStock ) {
 				throw new BusinessException("The requested book is not in stock.");
 			}

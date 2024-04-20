@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 public class SearchBooksByNameResponse {
 	private String bookName;
 
+	private String isbn;
+
 	private int edition;
 
 	private int numberOfPages;

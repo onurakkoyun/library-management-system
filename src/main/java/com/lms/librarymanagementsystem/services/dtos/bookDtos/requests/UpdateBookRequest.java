@@ -5,8 +5,10 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,10 @@ public class UpdateBookRequest {
 	
 	@NotBlank(message = "Kitap isimi alanı boş olamaz.")
 	private String bookName;
+	
+	@Size(min = 10, max = 13, message = "ISBN numarası 10 ile 13 karakter arasında olmalıdır")
+    @Pattern(regexp = "^[0-9]+$", message = "ISBN numarası sadece rakamlardan oluşmalıdır")
+	private String isbn;
 
 	@Positive(message = "Baskı sayısı 1'den küçük olamaz.")
 	private int edition;
