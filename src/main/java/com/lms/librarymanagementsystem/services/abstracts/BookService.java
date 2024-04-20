@@ -8,6 +8,7 @@ import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.UpdateBoo
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.AddBookResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.DeleteBookResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.ListBookResponse;
+import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.SearchBooksByNameResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.UpdateBookResponse;
 
 public interface BookService {
@@ -18,4 +19,10 @@ public interface BookService {
 	DeleteBookResponse delete(DeleteBookRequest request);
 	
 	List<ListBookResponse> getAll();
+	
+	List<SearchBooksByNameResponse> searchBooks(String bookName);
+	
+	void increaseBorrowingInStock(int bookId);
+	
+	void decreaseBorrowingInStock(int bookId);
 }

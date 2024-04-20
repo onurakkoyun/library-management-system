@@ -21,11 +21,13 @@ public class BookBusinessRuleImpl implements BookBusinessRuleService {
 	@Override
 	public void checkIfBookAvailableForBorrowing(BorrowingBook borrowingBook) {
 		Optional<Book> optionalBook = bookRepository.findById(borrowingBook.getBook().getId());
+		
 		if (optionalBook.isPresent()) {
 			Book book = optionalBook.get();
 			int unitsInStock = book.getUnitsInStock();
-			int borrowingCount = bookRepository.getBorrowingCountByBookId(book.getId());
-			if (borrowingCount == unitsInStock ) {
+			int borroedInStock = book.getBorrowedInStock();
+			//int borrowingCount = bookRepository.getBorrowingCountByBookId(book.getId());
+			if (borroedInStock == unitsInStock ) {
 				throw new BusinessException("The requested book is not in stock.");
 			}
 		}

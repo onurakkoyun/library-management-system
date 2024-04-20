@@ -9,8 +9,9 @@ import com.lms.librarymanagementsystem.core.utilities.exceptions.types.BusinessE
 import com.lms.librarymanagementsystem.entities.BorrowingBook;
 import com.lms.librarymanagementsystem.entities.Member;
 import com.lms.librarymanagementsystem.repositories.BorrowingBookRepository;
-import com.lms.librarymanagementsystem.repositories.MemberRepository;
+import com.lms.librarymanagementsystem.services.abstracts.BookService;
 import com.lms.librarymanagementsystem.services.abstracts.BorrowingBookService;
+import com.lms.librarymanagementsystem.services.abstracts.MemberService;
 import com.lms.librarymanagementsystem.services.dtos.borrowingBookDtos.requests.AddBorrowingBookRequest;
 import com.lms.librarymanagementsystem.services.dtos.borrowingBookDtos.requests.ReturnBorrowingBookRequest;
 import com.lms.librarymanagementsystem.services.dtos.borrowingBookDtos.responses.AddBorrowingBookResponse;
@@ -27,11 +28,13 @@ public class BorrowingServiceImpl implements BorrowingBookService {
 
 	private BorrowingBookRepository borrowingBookRepository;
 
-	private MemberRepository memberRepository;
+	private MemberService memberService;
 
 	private BorrowingBookBusinessRuleService borrowingBookBusinessRuleService;
 
 	private BookBusinessRuleService bookBusinessRuleService;
+	
+	private BookService bookService;
 
 	@Override
 	public AddBorrowingBookResponse add(AddBorrowingBookRequest request) {
@@ -42,6 +45,7 @@ public class BorrowingServiceImpl implements BorrowingBookService {
 		borrowingBook.setStartDate(LocalDate.now());
 		borrowingBook.setReturned(false);
 
+		bookService.increaseBorrowingInStock(request.getBookId());// Kitabın kiralanma sayısını arttırdık.
 		borrowingBookRepository.save(borrowingBook);
 
 		AddBorrowingBookResponse response = new AddBorrowingBookResponse("The book was lent.");
@@ -51,8 +55,7 @@ public class BorrowingServiceImpl implements BorrowingBookService {
 
 	@Override
 	public ReturnBorrowingBookResponse returnBook(ReturnBorrowingBookRequest request) {
-		Member member = memberRepository.findById(request.getMemberId())
-				.orElseThrow(() -> new BusinessException("Member is not found!"));
+		Member member = memberService.getById(request.getMemberId());
 
 		Optional<BorrowingBook> optionalBorrowingBook = Optional.ofNullable(borrowingBookRepository
 				.findByBook_IdAndMember_Id(request.getBookId(), request.getMemberId()).orElseThrow(
@@ -68,6 +71,7 @@ public class BorrowingServiceImpl implements BorrowingBookService {
 			member.setPenaltyAmount(member.getPenaltyAmount() + penaltyAmount);
 		}
 
+		bookService.decreaseBorrowingInStock(request.getBookId());// Kitabın kiralanma sayısını azalttık.
 		borrowingBook.setReturnDate(currentDate);
 		borrowingBook.setReturned(true);
 		borrowingBookRepository.save(borrowingBook);

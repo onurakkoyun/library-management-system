@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.lms.librarymanagementsystem.core.utilities.exceptions.types.BusinessException;
 import com.lms.librarymanagementsystem.entities.Author;
 import com.lms.librarymanagementsystem.entities.Book;
 import com.lms.librarymanagementsystem.entities.Category;
@@ -19,6 +20,7 @@ import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.UpdateBoo
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.AddBookResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.DeleteBookResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.ListBookResponse;
+import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.SearchBooksByNameResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.UpdateBookResponse;
 import com.lms.librarymanagementsystem.services.mappers.BookMapper;
 import lombok.AllArgsConstructor;
@@ -34,10 +36,8 @@ public class BookServiceImpl implements BookService {
 
 		Book book = BookMapper.INSTANCE.mapAddBookRequestToBook(request);
 
-		List<Author> authors = Optional.ofNullable(request.getAuthors())
-				.orElse(Collections.emptyList()).stream()
-				.map(author -> BookMapper.INSTANCE.mapAssignAuthorRequestToAuthor(author))
-				.collect(Collectors.toList());
+		List<Author> authors = Optional.ofNullable(request.getAuthors()).orElse(Collections.emptyList()).stream()
+				.map(author -> BookMapper.INSTANCE.mapAssignAuthorRequestToAuthor(author)).collect(Collectors.toList());
 		book.setAuthors(authors);// Authors ile ilişkilendirme.
 
 		List<Category> categories = Optional.ofNullable(request.getCategories()).orElse(Collections.emptyList())
@@ -80,9 +80,41 @@ public class BookServiceImpl implements BookService {
 	public List<ListBookResponse> getAll() {
 		List<Book> books = bookRepository.findAll();
 
-		List<ListBookResponse> response = books.stream().map(BookMapper.INSTANCE::mapListBookToListBookResponse)
+		List<ListBookResponse> response = books.stream().map(BookMapper.INSTANCE::mapBookToListBookResponse)
 				.collect(Collectors.toList());
 
+		return response;
+	}
+
+	@Override
+	public void increaseBorrowingInStock(int bookId) {
+		Book book = bookRepository.findById(bookId)
+				.orElseThrow(() -> new BusinessException("Requested book is not found!"));
+
+		book.setBorrowedInStock(book.getBorrowedInStock() + 1);
+
+		bookRepository.save(book);
+	}
+
+	@Override
+	public void decreaseBorrowingInStock(int bookId) {
+		Book book = bookRepository.findById(bookId)
+				.orElseThrow(() -> new BusinessException("Requested book is not found!"));
+
+		book.setBorrowedInStock(book.getBorrowedInStock() - 1);
+
+		bookRepository.save(book);
+
+	}
+
+	@Override
+	public List<SearchBooksByNameResponse> searchBooks(String searchText) {
+		
+		List<Book> books = bookRepository.searchBooks(searchText);
+	
+		List<SearchBooksByNameResponse> response = books.stream().map(BookMapper.INSTANCE::mapBookToSearchBooksByNameResponse)
+				.collect(Collectors.toList());
+		
 		return response;
 	}
 

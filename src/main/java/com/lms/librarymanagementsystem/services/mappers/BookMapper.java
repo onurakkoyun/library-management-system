@@ -14,6 +14,7 @@ import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.AssignCat
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.AssignPublisherRequest;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.UpdateBookRequest;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.ListBookResponse;
+import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.SearchBooksByNameResponse;
 
 @Mapper
 public interface BookMapper {
@@ -33,5 +34,7 @@ public interface BookMapper {
 	@Mapping(target = "id", source = "bookId")
 	Book mapUpdateBookRequestToBook(UpdateBookRequest request);
 	
-    ListBookResponse mapListBookToListBookResponse(Book book);
+    ListBookResponse mapBookToListBookResponse(Book book);
+    
+    SearchBooksByNameResponse mapBookToSearchBooksByNameResponse(Book book);
 }

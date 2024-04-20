@@ -3,14 +3,7 @@ package com.lms.librarymanagementsystem.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.lms.librarymanagementsystem.services.abstracts.BookService;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.AddBookRequest;
@@ -19,6 +12,7 @@ import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.UpdateBoo
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.AddBookResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.DeleteBookResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.ListBookResponse;
+import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.SearchBooksByNameResponse;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.responses.UpdateBookResponse;
 
 import jakarta.validation.Valid;
@@ -55,4 +49,11 @@ public class BooksController {
     public List<ListBookResponse> getAll() {
         return bookService.getAll();
     }
+    
+    @GetMapping("/search-book")
+    @ResponseStatus(HttpStatus.OK)
+    public List<SearchBooksByNameResponse> searchBooks(@RequestParam String searchText) {
+        return bookService.searchBooks(searchText);
+    }
+    
 }

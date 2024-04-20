@@ -38,6 +38,9 @@ public class Book extends BaseEntity<Integer>{
 	
 	@Column(name="units_in_stock")
     private int unitsInStock;
+
+	@Column(name="borrowed_in_stock")
+	private int borrowedInStock;
 	
 	@Column(name = "release_date")
 	private LocalDate releaseDate;
