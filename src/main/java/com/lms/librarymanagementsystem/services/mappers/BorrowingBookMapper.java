@@ -6,7 +6,6 @@ import org.mapstruct.factory.Mappers;
 
 import com.lms.librarymanagementsystem.entities.BorrowingBook;
 import com.lms.librarymanagementsystem.services.dtos.borrowingBookDtos.requests.AddBorrowingBookRequest;
-import com.lms.librarymanagementsystem.services.dtos.borrowingBookDtos.requests.ReturnBorrowingBookRequest;
 
 @Mapper
 public interface BorrowingBookMapper {
@@ -15,8 +14,4 @@ public interface BorrowingBookMapper {
 	@Mapping(target = "book.id", source = "bookId")
 	@Mapping(target = "member.id", source = "memberId")
 	BorrowingBook mapAddBorrowingBookRequestToBorrowingBook(AddBorrowingBookRequest request);
-	
-	@Mapping(target = "book.id", source = "bookId")
-	@Mapping(target = "member.id", source = "memberId")
-	BorrowingBook mapReturnBorrowingBookRequestToBorrowingBook(ReturnBorrowingBookRequest request);
 }

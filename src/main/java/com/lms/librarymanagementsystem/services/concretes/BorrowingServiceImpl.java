@@ -33,7 +33,7 @@ public class BorrowingServiceImpl implements BorrowingBookService {
 	private BorrowingBookBusinessRuleService borrowingBookBusinessRuleService;
 
 	private BookBusinessRuleService bookBusinessRuleService;
-	
+
 	private BookService bookService;
 
 	@Override
@@ -61,19 +61,20 @@ public class BorrowingServiceImpl implements BorrowingBookService {
 				.findByBook_IdAndMember_Id(request.getBookId(), request.getMemberId()).orElseThrow(
 						() -> new BusinessException("This member has not borrowed the book currently in question.")));
 
+		bookService.decreaseBorrowingInStock(request.getBookId());// Kitabın kiralanma sayısını azalttık.
+
 		BorrowingBook borrowingBook = optionalBorrowingBook.get();
 
 		LocalDate currentDate = LocalDate.now();
 
-		if (currentDate.isAfter(borrowingBook.getEndDate())) {
-			double penaltyAmount = borrowingBookBusinessRuleService.calculatePenalty(currentDate,
-					borrowingBook.getEndDate());
-			member.setPenaltyAmount(member.getPenaltyAmount() + penaltyAmount);
-		}
+		double checkPenalty = borrowingBookBusinessRuleService.calculatePenalty(currentDate,
+				borrowingBook.getEndDate());
 
-		bookService.decreaseBorrowingInStock(request.getBookId());// Kitabın kiralanma sayısını azalttık.
+		member.setPenaltyAmount(member.getPenaltyAmount() + checkPenalty);
+
 		borrowingBook.setReturnDate(currentDate);
 		borrowingBook.setReturned(true);
+
 		borrowingBookRepository.save(borrowingBook);
 
 		return new ReturnBorrowingBookResponse(

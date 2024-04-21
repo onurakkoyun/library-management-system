@@ -29,93 +29,87 @@ import lombok.AllArgsConstructor;
 @Service
 public class BookServiceImpl implements BookService {
 
-	private BookRepository bookRepository;
+    private BookRepository bookRepository;
 
-	@Override
-	public AddBookResponse add(AddBookRequest request) {
+    @Override
+    public AddBookResponse add(AddBookRequest request) {
 
-		Book book = BookMapper.INSTANCE.mapAddBookRequestToBook(request);
+        Book book = BookMapper.INSTANCE.mapAddBookRequestToBook(request);
 
-		List<Author> authors = Optional.ofNullable(request.getAuthors()).orElse(Collections.emptyList()).stream()
-				.map(author -> BookMapper.INSTANCE.mapAssignAuthorRequestToAuthor(author)).collect(Collectors.toList());
-		book.setAuthors(authors);// Authors ile ilişkilendirme.
+        List<Author> authors = Optional.ofNullable(request.getAuthors()).orElse(Collections.emptyList()).stream()
+                .map(BookMapper.INSTANCE::mapAssignAuthorRequestToAuthor).collect(Collectors.toList());
+        book.setAuthors(authors);// Authors ile ilişkilendirme.
 
-		List<Category> categories = Optional.ofNullable(request.getCategories()).orElse(Collections.emptyList())
-				.stream().map(category -> BookMapper.INSTANCE.mapAssignCategoryRequestToCategory(category))
-				.collect(Collectors.toList());
-		book.setCategories(categories);// Categories ile ilişkilendirme.
+        List<Category> categories = Optional.ofNullable(request.getCategories()).orElse(Collections.emptyList())
+                .stream().map(BookMapper.INSTANCE::mapAssignCategoryRequestToCategory)
+                .collect(Collectors.toList());
+        book.setCategories(categories);// Categories ile ilişkilendirme.
 
-		List<Publisher> publishers = Optional.ofNullable(request.getPublishers()).orElse(Collections.emptyList())
-				.stream().map(publisher -> BookMapper.INSTANCE.mapAssignPublisherRequestToPublisher(publisher))
-				.collect(Collectors.toList());
-		book.setPublishers(publishers);// Publishers ile ilişkilendirme.
+        List<Publisher> publishers = Optional.ofNullable(request.getPublishers()).orElse(Collections.emptyList())
+                .stream().map(BookMapper.INSTANCE::mapAssignPublisherRequestToPublisher)
+                .collect(Collectors.toList());
+        book.setPublishers(publishers);// Publishers ile ilişkilendirme.
 
-		bookRepository.save(book);
+        bookRepository.save(book);
 
-		AddBookResponse response = new AddBookResponse("Book added.");
+        return new AddBookResponse("Book added.");
+    }
 
-		return response;
-	}
+    @Override
+    public UpdateBookResponse update(UpdateBookRequest request) {
+        Book existingBook = BookMapper.INSTANCE.mapUpdateBookRequestToBook(request);
 
-	@Override
-	public UpdateBookResponse update(UpdateBookRequest request) {
-		Book existingBook = BookMapper.INSTANCE.mapUpdateBookRequestToBook(request);
+        bookRepository.save(existingBook);
 
-		bookRepository.save(existingBook);
+        return new UpdateBookResponse("Book updated.");
+    }
 
-		UpdateBookResponse response = new UpdateBookResponse("Book updated.");
+    @Override
+    public DeleteBookResponse delete(DeleteBookRequest request) {
+        bookRepository.deleteById(request.getBookId());
 
-		return response;
-	}
+        return new DeleteBookResponse("Book deleted.");
+    }
 
-	@Override
-	public DeleteBookResponse delete(DeleteBookRequest request) {
-		bookRepository.deleteById(request.getBookId());
+    @Override
+    public List<ListBookResponse> getAll() {
+        List<Book> books = bookRepository.findAll();
 
-		DeleteBookResponse response = new DeleteBookResponse("Book deleted.");
-		return response;
-	}
+        List<ListBookResponse> response = books.stream().map(BookMapper.INSTANCE::mapBookToListBookResponse)
+                .collect(Collectors.toList());
 
-	@Override
-	public List<ListBookResponse> getAll() {
-		List<Book> books = bookRepository.findAll();
+        return response;
+    }
 
-		List<ListBookResponse> response = books.stream().map(BookMapper.INSTANCE::mapBookToListBookResponse)
-				.collect(Collectors.toList());
+    @Override
+    public List<SearchBooksByNameResponse> searchBooks(String searchText) {
 
-		return response;
-	}
+        List<Book> books = bookRepository.searchBooks(searchText);
 
-	@Override
-	public void increaseBorrowingInStock(int bookId) {
-		Book book = bookRepository.findById(bookId)
-				.orElseThrow(() -> new BusinessException("Requested book is not found!"));
+        List<SearchBooksByNameResponse> response = books.stream().map(BookMapper.INSTANCE::mapBookToSearchBooksByNameResponse)
+                .collect(Collectors.toList());
 
-		book.setBorrowedInStock(book.getBorrowedInStock() + 1);
+        return response;
+    }
 
-		bookRepository.save(book);
-	}
+    @Override
+    public void increaseBorrowingInStock(int bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BusinessException("Requested book is not found!"));
 
-	@Override
-	public void decreaseBorrowingInStock(int bookId) {
-		Book book = bookRepository.findById(bookId)
-				.orElseThrow(() -> new BusinessException("Requested book is not found!"));
+        book.setBorrowedInStock(book.getBorrowedInStock() + 1);
 
-		book.setBorrowedInStock(book.getBorrowedInStock() - 1);
+        bookRepository.save(book);
+    }
 
-		bookRepository.save(book);
+    @Override
+    public void decreaseBorrowingInStock(int bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BusinessException("Requested book is not found!"));
 
-	}
+        book.setBorrowedInStock(book.getBorrowedInStock() - 1);
 
-	@Override
-	public List<SearchBooksByNameResponse> searchBooks(String searchText) {
-		
-		List<Book> books = bookRepository.searchBooks(searchText);
-	
-		List<SearchBooksByNameResponse> response = books.stream().map(BookMapper.INSTANCE::mapBookToSearchBooksByNameResponse)
-				.collect(Collectors.toList());
-		
-		return response;
-	}
+        bookRepository.save(book);
 
+    }
 }
