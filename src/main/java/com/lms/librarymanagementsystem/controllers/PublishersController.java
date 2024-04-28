@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/publishers")
+@RequestMapping("/api/publishers")
 public class PublishersController {
 	
 	private PublisherService publisherService;

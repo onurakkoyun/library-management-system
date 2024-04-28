@@ -2,7 +2,7 @@ package com.lms.librarymanagementsystem.entities;
 
 import java.time.LocalDate;
 
-import com.lms.librarymanagementsystem.core.utilities.entities.BaseEntity;
+import com.lms.librarymanagementsystem.entities.baseEntity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

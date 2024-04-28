@@ -11,7 +11,6 @@ import com.lms.librarymanagementsystem.core.utilities.exceptions.types.BusinessE
 import com.lms.librarymanagementsystem.entities.Author;
 import com.lms.librarymanagementsystem.entities.Book;
 import com.lms.librarymanagementsystem.entities.Category;
-import com.lms.librarymanagementsystem.entities.Publisher;
 import com.lms.librarymanagementsystem.repositories.BookRepository;
 import com.lms.librarymanagementsystem.services.abstracts.BookService;
 import com.lms.librarymanagementsystem.services.dtos.bookDtos.requests.AddBookRequest;
@@ -44,11 +43,6 @@ public class BookServiceImpl implements BookService {
                 .stream().map(BookMapper.INSTANCE::mapAssignCategoryRequestToCategory)
                 .collect(Collectors.toList());
         book.setCategories(categories);// Categories ile ilişkilendirme.
-
-        List<Publisher> publishers = Optional.ofNullable(request.getPublishers()).orElse(Collections.emptyList())
-                .stream().map(BookMapper.INSTANCE::mapAssignPublisherRequestToPublisher)
-                .collect(Collectors.toList());
-        book.setPublishers(publishers);// Publishers ile ilişkilendirme.
 
         bookRepository.save(book);
 

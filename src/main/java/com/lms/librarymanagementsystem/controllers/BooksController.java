@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/books")
+@RequestMapping("/api/books")
 public class BooksController {
 	
 	private BookService bookService;

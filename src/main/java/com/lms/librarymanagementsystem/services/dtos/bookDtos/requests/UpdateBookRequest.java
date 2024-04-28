@@ -37,11 +37,11 @@ public class UpdateBookRequest {
 
 	@Past(message = "Yayın tarihi geçmiş bir tarih olmalı.")
 	private LocalDate releaseDate;
+	
+	private int publisherId;
 
 	private List<AssignAuthorRequest> authors;
 
 	private List<AssignCategoryRequest> categories;
-
-	private List<AssignPublisherRequest> publishers;
 
 }

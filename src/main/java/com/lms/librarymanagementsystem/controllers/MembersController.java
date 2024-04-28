@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/members")
+@RequestMapping("/api/members")
 public class MembersController {
 	
 	private MemberService memberService;

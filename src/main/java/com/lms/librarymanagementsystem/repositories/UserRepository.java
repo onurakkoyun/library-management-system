@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.lms.librarymanagementsystem.core.utilities.entities.User;
+import com.lms.librarymanagementsystem.entities.baseEntity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-	Optional<User> getByUsername(String username);
-
-	Optional<User> getByEmail(String email);
+	Optional<User> findByEmail(String email);
+	
+	boolean existsUserByEmail(String email);
 }

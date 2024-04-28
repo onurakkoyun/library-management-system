@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.lms.librarymanagementsystem.services.dtos.authorDtos.responses.ListAuthorResponse;
 import com.lms.librarymanagementsystem.services.dtos.categoryDtos.responses.ListCategoryResponse;
-import com.lms.librarymanagementsystem.services.dtos.publisherDto.responses.ListPublisherResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,9 +27,9 @@ public class ListBookResponse {
 	
 	private LocalDate releaseDate;
 	
+	private String publisherName;
+	
 	private List<ListCategoryResponse> categories;
 	
-	private List<ListAuthorResponse> authors;
-	
-	private List<ListPublisherResponse> publishers;
+	private List<ListAuthorResponse> authors;	
 }

@@ -9,4 +9,6 @@ public interface BorrowingBookService {
 	AddBorrowingBookResponse add(AddBorrowingBookRequest request);
 	
 	ReturnBorrowingBookResponse returnBook(ReturnBorrowingBookRequest request);
+	
+	void sendReminderForDueBooks();
 }

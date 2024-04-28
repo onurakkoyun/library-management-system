@@ -1,6 +1,4 @@
-package com.lms.librarymanagementsystem.core.utilities.entities;
-
-import java.io.Serializable;
+package com.lms.librarymanagementsystem.entities.baseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -11,11 +9,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public class BaseEntity<T extends Serializable> {
+public abstract class BaseEntity<T extends Serializable> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

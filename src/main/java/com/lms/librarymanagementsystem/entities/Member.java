@@ -3,7 +3,7 @@ package com.lms.librarymanagementsystem.entities;
 
 import java.util.List;
 
-import com.lms.librarymanagementsystem.core.utilities.entities.BaseEntity;
+import com.lms.librarymanagementsystem.entities.baseEntity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,11 +22,17 @@ import lombok.Setter;
 @Table(name = "members")
 public class Member extends BaseEntity<Integer>{
 	
-	@Column(name = "firstname")
+	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name = "lastname")
+	@Column(name = "last_name")
 	private String lastName;
+	
+	@Column(name = "phone_number")
+	private String phoneNumber;
+	
+	@Column(name = "email")
+	private String email;
 	
 	@Column(name = "identity_number", unique = true)
 	private String identityNumber;
