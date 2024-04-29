@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lms.librarymanagementsystem.services.abstracts.AuthService;
 import com.lms.librarymanagementsystem.services.dtos.authDtos.requests.LoginRequest;
-import com.lms.librarymanagementsystem.services.dtos.authDtos.requests.RegisterRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,10 +20,5 @@ public class AuthController {
 	@PostMapping("/login")
 	public String login(@RequestBody LoginRequest loginRequest) {
 		return authService.login(loginRequest);
-	}
-
-	@PostMapping("register")
-	public void register(@RequestBody RegisterRequest request) {
-		authService.register(request);
 	}
 }
